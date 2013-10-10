@@ -8,7 +8,7 @@
 
 #import "BullsEyeViewController.h"
 
-@interface BullsEyeViewController ()
+@interface BullsEyeViewController () 
 
 @end
 
@@ -23,7 +23,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	[self startNewRound];
+	[self startNewGame];
     [self updateLabels];
 }
 
@@ -55,7 +55,7 @@
     int difference = abs(_targetValue - _currentValue);
     int points = 100 - difference;
     
-    NSString *title;
+    NSString *title; 
     if (difference == 0) {
         title = @"Perfect!";
         points += 100;
@@ -79,17 +79,31 @@
     UIAlertView *alertView = [[UIAlertView alloc]
         initWithTitle:title
         message:message
-        delegate:nil
+        delegate:self
         cancelButtonTitle:@"OK"
         otherButtonTitles:nil];
     
     [alertView show];
-    
-    [self startNewRound];
 }
+
+- (void)alertView:(UIAlertView *)alertView
+    didDismissWithButtonIndex:(NSInteger)buttonIndex
+    {
+        [self startNewRound];
+    }
 
 - (IBAction)sliderMoved:(UISlider *)slider {
     _currentValue = lroundf(slider.value);
+}
+
+- (IBAction)startOver{
+    [self startNewGame];
+}
+
+- (void)startNewGame {
+    _score = 0;
+    _round = 0;
+    [self startNewRound];
 }
 
 @end
