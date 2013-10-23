@@ -106,4 +106,7 @@
     [self startNewRound];
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return YES; }
+
 @end
