@@ -42,6 +42,7 @@
     self.targetLabel.text = [NSString stringWithFormat:@"%d",_targetValue];
     self.scoreLabel.text = [NSString stringWithFormat:@"%d",_score];
     self.roundLabel.text = [NSString stringWithFormat:@"%d",_round];
+    
 }
 
 - (void)didReceiveMemoryWarning
