@@ -1,7 +1,7 @@
 <?
 
 //setup db connection
-$link = mysqli_connect("localhost","root","");
+$link = mysqli_connect("ameiva","root","");
 mysqli_select_db($link, "iReport");
 
 //executes a given sql query with the params and returns an array as result
