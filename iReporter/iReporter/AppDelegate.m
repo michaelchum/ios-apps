@@ -1,27 +1,21 @@
 //
-//  LoginAppDelegate.m
-//  VitaLogin
+//  AppDelegate.m
+//  iReporter
 //
-//  Created by Michael Ho on 11/09/2013.
+//  Created by Michael Ho on 11/12/13.
 //  Copyright (c) 2013 Michael Ho. All rights reserved.
 //
 
-#import "LoginAppDelegate.h"
+#import "AppDelegate.h"
 
-#import "LoginViewController.h"
+#import "StreamScreen.h"
 
-@implementation LoginAppDelegate
+@implementation AppDelegate
 
 @synthesize window = _window;
-@synthesize viewController = _viewController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.viewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
-    self.window.rootViewController = self.viewController;
-    [self.window makeKeyAndVisible];
     return YES;
 }
 
@@ -36,7 +30,7 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     /*
-     Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
+     Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
      If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
      */
 }
