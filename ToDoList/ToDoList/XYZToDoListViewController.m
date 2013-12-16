@@ -7,6 +7,7 @@
 //
 
 #import "XYZToDoListViewController.h"
+#import "XYZToDoItem.h"
 
 @interface XYZToDoListViewController ()
 
@@ -15,6 +16,18 @@
 @end
 
 @implementation XYZToDoListViewController
+
+- (void)loadInitialData {
+    XYZToDoItem *item1 = [[XYZToDoItem alloc] init];
+    item1.itemName = @"Buy milk";
+    [self.toDoItems addObject:item1];
+    XYZToDoItem *item2 = [[XYZToDoItem alloc] init];
+    item2.itemName = @"Buy eggs";
+    [self.toDoItems addObject:item2];
+    XYZToDoItem *item3 = [[XYZToDoItem alloc] init];
+    item3.itemName = @"Read a book";
+    [self.toDoItems addObject:item3];
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -30,6 +43,7 @@
     [super viewDidLoad];
     
     self.toDoItems = [[NSMutableArray alloc] init];
+    [self loadInitialData];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;

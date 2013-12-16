@@ -1,14 +1,14 @@
 //
-//  XYZToDoItemViewController.h
+//  XYZToDoItem.h
 //  ToDoList
 //
-//  Created by Michael Ho on 12/13/2013.
+//  Created by Michael Ho on 12/16/2013.
 //  Copyright (c) 2013 Michael Ho. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-@interface XYZToDoItemViewController : UIViewController
+@interface XYZToDoItem : NSObject
 
 @property NSString *itemName;
 @property BOOL completed;
