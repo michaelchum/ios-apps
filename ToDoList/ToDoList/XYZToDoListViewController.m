@@ -42,6 +42,7 @@
 {
     [super viewDidLoad];
     
+    // Initialize the empty NSMutableArray
     self.toDoItems = [[NSMutableArray alloc] init];
     [self loadInitialData];
 
@@ -59,19 +60,19 @@
 }
 
 #pragma mark - Table view data source
-/*
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 #warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 #warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return [self.toDoItems count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -83,7 +84,7 @@
     
     return cell;
 }
-*/
+
 - (IBAction)unwindToList:(UIStoryboardSegue *)segue
 {
     
