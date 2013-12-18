@@ -50,6 +50,10 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="doneButton" destination="m3Z-LO-fbd" id="BFf-Lb-U5u"/>
+                        <outlet property="textField" destination="tvb-mU-N17" id="Zhw-QI-Zpi"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jeZ-cA-RN4" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="HJ4-gx-iKY" userLabel="Exit" sceneMemberID="exit"/>

@@ -8,6 +8,7 @@
 
 #import "XYZToDoListViewController.h"
 #import "XYZToDoItem.h"
+#import "XYZAddToDoItemViewController.h"
 
 @interface XYZToDoListViewController ()
 
@@ -45,12 +46,12 @@
     // Initialize the empty NSMutableArray
     self.toDoItems = [[NSMutableArray alloc] init];
     [self loadInitialData];
-
+    
     // Uncomment the following line to preserve selection between presentations.
-    self.clearsSelectionOnViewWillAppear = NO;
+    //self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    //self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning
@@ -84,12 +85,23 @@
     
     XYZToDoItem *toDoItem = [self.toDoItems objectAtIndex:indexPath.row];
     cell.textLabel.text = toDoItem.itemName;
+    if (toDoItem.completed) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    
     return cell;
 }
 
 - (IBAction)unwindToList:(UIStoryboardSegue *)segue
 {
-    
+    XYZAddToDoItemViewController *source = [segue sourceViewController];
+    XYZToDoItem *item = source.toDoItem;
+    if (item != nil){
+        [self.toDoItems addObject:item];
+        [self.tableView reloadData];
+    }
 }
 
 /*
@@ -142,5 +154,20 @@
 }
 
  */
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Deselect the item right after touch
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    // Fetch the tapped item from array
+    XYZToDoItem *tappedItem = [self.toDoItems objectAtIndex:indexPath.row];
+    
+    // Toggle completion
+    tappedItem.completed = !tappedItem.completed;
+    
+    // Tell the table to reload data after update
+    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+}
 
 @end
