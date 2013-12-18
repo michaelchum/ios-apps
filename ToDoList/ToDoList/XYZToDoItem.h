@@ -14,4 +14,6 @@
 @property BOOL completed;
 @property (readonly) NSDate *creationDate;
 
+- (void)markAsCompleted: (BOOL)isComplete;
+
 @end
