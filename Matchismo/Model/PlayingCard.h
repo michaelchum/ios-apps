@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface PlayingCard : NSObject
+#import "card.h"
+
+@interface PlayingCard : Card
+
+@property (strong, nonatomic) NSString *suit;
+@property (nonatomic) NSUInteger rank;
 
 @end

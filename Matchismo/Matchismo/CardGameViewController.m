@@ -15,8 +15,8 @@
 
 @implementation CardGameViewController
 
-// Modify the setter of flipCount to update the value of flipsLabelin view
-- (void) setFlipCount:(int)flipCount {
+// Override setter of flipCount to update the value of flipsLabelin view
+- (void)setFlipCount:(int)flipCount {
     _flipCount = flipCount;
     self.flipsLabel.text = [NSString stringWithFormat:@"Flips: %d", self.flipCount];
     NSLog(@"Flips count changed to %d", self.flipCount);
