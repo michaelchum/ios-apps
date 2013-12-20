@@ -12,7 +12,7 @@
 @interface CardGameViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *flipsLabel;
 @property (nonatomic) int flipCount;
-@property (strong, nonatomic) PlayingCardDeck *deck;
+@property (strong, nonatomic) Deck *deck;
 @end
 
 @implementation CardGameViewController
@@ -25,7 +25,7 @@
 }
 
 // Override getter of deck with lazy instantiation
-- (PlayingCardDeck *)deck{
+- (Deck *)deck{
     if (!_deck) {
         _deck = [[PlayingCardDeck alloc] init];
     }
@@ -41,9 +41,17 @@
         [sender setTitle:@"" forState:UIControlStateNormal];
     } else {
         Card *randomCard = [self.deck drawRandomCard];
-        [sender setBackgroundImage:[UIImage imageNamed:@"cardfront"]
-                          forState:UIControlStateNormal];
-        [sender setTitle:randomCard.contents forState:UIControlStateNormal];
+        
+        if (randomCard){
+            [sender setBackgroundImage:[UIImage imageNamed:@"cardfront"]
+                              forState:UIControlStateNormal];
+            [sender setTitle:randomCard.contents forState:UIControlStateNormal];
+        } else {
+            [sender setBackgroundImage:[UIImage imageNamed:@"cardfront"]
+                              forState:UIControlStateNormal];
+            [sender setTitle:@"Empty" forState:UIControlStateNormal];
+        }
+
     }
     self.flipCount++;
 
