@@ -10,24 +10,45 @@
 
 @implementation PlayingCard
 
+// Only access the property through instance variable in its GETTER, its SETTER or an INITIALIZER, elsewhere use self.suit
 @synthesize suit = _suit; // because we add BOTH the getter and setter
 
-// Override getter from superclass Card
-- (NSString *)contents {
-    NSArray *rankStrings = @[@"?",@"A",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"J",@"Q",@"K"];
-    return [rankStrings[self.rank] stringByAppendingString:self.suit];
-}
-
-// Override setter
+// Override suit setter
 - (void) setSuit:(NSString *)suit {
-    if ([@[@"♣︎",@"♠︎",@"♥︎",@"♦︎"] containsObject:suit]) {
+    if ([[PlayingCard validSuits] containsObject:suit]) {
         _suit = suit;
     }
 }
 
-// Override getter
+// Override suit getter
 - (NSString *)suit {
     return _suit ? _suit : @"?";
 }
+
++ (NSArray *)validSuits {
+    return @[@"♣︎",@"♠︎",@"♥︎",@"♦︎"];
+}
+
+// Override contents getter from superclass Card
+- (NSString *)contents {
+    NSArray *rankStrings = [PlayingCard rankStrings];
+    return [rankStrings[self.rank] stringByAppendingString:self.suit];
+}
+
++ (NSArray *)rankStrings{
+    NSArray *rankStrings = @[@"?",@"A",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"J",@"Q",@"K"];
+    return rankStrings;
+}
+
++ (NSUInteger)maxRank{
+    return [[self rankStrings] count] - 1;
+}
+
+- (void)setRank:(NSUInteger)rank {
+    if (rank <= [PlayingCard maxRank]){
+        _rank = rank;
+    }
+}
+
 
 @end
