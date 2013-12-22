@@ -16,7 +16,7 @@
 
 @implementation Deck
 
-// Modify the getter method with lazy instantiation
+// Modify the getter method with lazy instantiation in the getter
 - (NSMutableArray *)cards {
     if (!_cards) _cards = [[NSMutableArray alloc] init];
     return _cards;
@@ -36,7 +36,6 @@
 
 - (Card *)drawRandomCard {
     Card *randomCard = nil;
-    
     if([self.cards count]){
         unsigned index = arc4random() % [self.cards count];
         randomCard = self.cards[index];

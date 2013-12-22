@@ -12,9 +12,7 @@
 @implementation PlayingCardDeck
 
 - (instancetype)init {
-    
-    // This is the ONLY time we assign self
-    // The purpose is just to check if self can be initialized (not nil)
+
     self = [super init];
     
     if(self) {

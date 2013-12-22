@@ -10,12 +10,13 @@
 
 @implementation Card
 
-- (void)match:(NSArray *)otherCards {
+- (int)match:(NSArray *)otherCards {
     for (Card *card in otherCards) {
         if ([card.contents isEqualToString: self.contents]) {
-            
+            return 1;
         }
     }
+    return 0;
 }
 
 @end
