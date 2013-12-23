@@ -17,6 +17,10 @@
 
 @implementation CardGameViewController
 
+- (void)viewDidLoad {
+    [self updateUI];
+}
+
 - (CardMatchingGame *)game {
     if (!_game) _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count]
                                                           usingDeck:[self createDeck]];
@@ -27,10 +31,9 @@
     return [[PlayingCardDeck alloc] init];
 }
 
-// The name of this method is touchCardButton: with the column included
 - (IBAction)touchCardButton:(UIButton *)sender {
-    int chosenButtonIndex = [self.cardButtons indexOfObject:sender];
-    [self.game chooseCardAtIndex:chosenButtonIndex];
+    //int chosenButtonIndex = [self.cardButtons indexOfObject:sender];
+    //[self.game chooseCardAtIndex:chosenButtonIndex];
     [self updateUI];
 }
 
@@ -38,6 +41,7 @@
     for (UIButton *cardButton in self.cardButtons) {
         int cardButtonIndex = [self.cardButtons indexOfObject:cardButton];
         Card *card = [self.game cardAtIndex:cardButtonIndex];
+        NSLog(@"%@",card.contents); // print null! card is null
         [cardButton setTitle:[self contentForCard:card] forState:UIControlStateNormal];
         [cardButton setImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
         cardButton.enabled = !card.isMatched;
@@ -45,10 +49,12 @@
 }
 
 - (NSString *)contentForCard:(Card *)card {
+    return card.contents;
     return card.chosen ? card.contents : @"";
 }
 
 - (UIImage *)backgroundImageForCard:(Card *)card {
+    return [UIImage imageNamed:@"cardback"];
     return [UIImage imageNamed:card.chosen ? @"cardfront" : @"cardback"];
 }
 

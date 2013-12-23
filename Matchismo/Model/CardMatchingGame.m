@@ -31,7 +31,9 @@
         for (int i = 0; i < count; count++) {
             Card *card = [deck drawRandomCard];
             if (card) {
-                [self.cards addObject: card];
+                card.chosen = NO;
+                card.isMatched = NO;
+                [self.cards addObject:card];
             } else {
                 self = nil;
                 break;
@@ -56,7 +58,7 @@ static const int COST_TO_CHOOSE = 1;
         if (card.chosen) {
             card.chosen = NO;
         } else {
-            // match against other chosen cards
+            // match against other chosen card
             for (Card *otherCard in self.cards) {
                 if (otherCard.chosen && !otherCard.isMatched) {
                     int matchScore = [card match:@[otherCard]];
@@ -74,7 +76,6 @@ static const int COST_TO_CHOOSE = 1;
             card.chosen = YES;
         }
     }
-    
 }
 
 @end
