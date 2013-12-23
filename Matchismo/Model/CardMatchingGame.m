@@ -48,6 +48,7 @@
 }
 
 static const int MATCH_BONUS = 4;
+static const int MATCH_THREE_BONUS = 3;
 static const int MISMATCH_PENALTY = 2;
 static const int COST_TO_CHOOSE = 1;
 
@@ -55,21 +56,43 @@ static const int COST_TO_CHOOSE = 1;
     Card *card = [self cardAtIndex:index];
     
     if (!card.isMatched) {
-        if (card.chosen) {
-            card.chosen = NO;
-        } else {
-            // match against other chosen card
-            for (Card *otherCard in self.cards) {
-                if (otherCard.chosen && !otherCard.isMatched) {
-                    int matchScore = [card match:@[otherCard]];
-                    if (matchScore) {
-                        self.score += matchScore * MATCH_BONUS;
-                        otherCard.isMatched = YES;
-                        card.isMatched = YES;
-                    } else {
-                        self.score -= MISMATCH_PENALTY;
-                        otherCard.chosen = NO;
+        if (!self.threeCardMatching) { // 2 card matching
+            if (card.chosen) {
+                card.chosen = NO;
+            } else {
+                // match against other chosen card
+                for (Card *otherCard in self.cards) {
+                    if (otherCard.chosen && !otherCard.isMatched) {
+                        int matchScore = [card match:@[otherCard]];
+                        if (matchScore) {
+                            self.score += matchScore * MATCH_BONUS;
+                            otherCard.isMatched = YES;
+                            card.isMatched = YES;
+                        } else {
+                            self.score -= MISMATCH_PENALTY;
+                            otherCard.chosen = NO;
+                        }
                     }
+                }
+                self.score -= COST_TO_CHOOSE;
+                card.chosen = YES;
+            }
+        } else { // 3 card matching
+            if (card.chosen) {
+                card.chosen = NO;
+            } else {
+                // find 2 other chosen cards
+                Card *secondCard;
+                Card *thirdCard;
+                for (Card *otherCard in self.cards) {
+                    if (!secondCard && otherCard.chosen && !otherCard.isMatched) {
+                        secondCard = otherCard;
+                    } else if (!thirdCard && otherCard.chosen && !otherCard.isMatched) {
+                        thirdCard = otherCard;
+                    }
+                }
+                if (secondCard && thirdCard) {
+                    
                 }
             }
             self.score -= COST_TO_CHOOSE;

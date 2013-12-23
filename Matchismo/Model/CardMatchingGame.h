@@ -20,5 +20,7 @@
 - (Card *)cardAtIndex:(NSUInteger)index;
 
 @property (nonatomic, readonly) NSUInteger score;
+@property (nonatomic) BOOL threeCardMatching;
+
 
 @end

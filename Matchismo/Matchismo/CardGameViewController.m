@@ -18,6 +18,23 @@
 
 @implementation CardGameViewController
 
+- (IBAction)twoOrThreeMatch:(UISegmentedControl *)sender {
+    switch (sender.selectedSegmentIndex) {
+        case 1:
+            self.game.threeCardMatching = YES;
+            break;
+            
+        default:
+            self.game.threeCardMatching = NO;
+            break;
+    }
+}
+
+- (IBAction)restartButton:(UIButton *)sender {
+    self.game = nil;
+    [self updateUI];
+}
+
 - (CardMatchingGame *)game {
     if (!_game) _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count]
                                                           usingDeck:[self createDeck]];
