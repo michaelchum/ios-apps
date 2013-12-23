@@ -28,7 +28,7 @@
     self = [super init]; // super's designated intializer
     
     if (self) {
-        for (int i = 0; i < count; count++) {
+        for (int i = 0; i < count; i++) {
             Card *card = [deck drawRandomCard];
             if (card) {
                 card.chosen = NO;
