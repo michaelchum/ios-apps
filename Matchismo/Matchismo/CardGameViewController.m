@@ -12,6 +12,7 @@
 
 @interface CardGameViewController ()
 @property (strong, nonatomic) CardMatchingGame *game;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *twoOrThreeMatch;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @end
@@ -31,7 +32,9 @@
 }
 
 - (IBAction)restartButton:(UIButton *)sender {
+    [self.twoOrThreeMatch setHidden:NO];
     self.game = nil;
+    if (self.twoOrThreeMatch.selectedSegmentIndex) self.game.threeCardMatching = YES;
     [self updateUI];
 }
 
@@ -46,6 +49,7 @@
 }
 
 - (IBAction)touchCardButton:(UIButton *)sender {
+    [self.twoOrThreeMatch setHidden:YES];
     int chosenButtonIndex = [self.cardButtons indexOfObject:sender];
     [self.game chooseCardAtIndex:chosenButtonIndex];
     [self updateUI];

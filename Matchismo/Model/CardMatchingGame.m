@@ -59,6 +59,7 @@ static const int COST_TO_CHOOSE = 1;
         if (!self.threeCardMatching) { // 2 card matching
             if (card.chosen) {
                 card.chosen = NO;
+                self.matchInfo = @"";
             } else {
                 // match against other chosen card
                 for (Card *otherCard in self.cards) {
@@ -80,6 +81,7 @@ static const int COST_TO_CHOOSE = 1;
         } else { // 3 card matching
             if (card.chosen) {
                 card.chosen = NO;
+                self.matchInfo = @"";
             } else {
                 // find 2 other chosen cards
                 Card *secondCard;
@@ -92,7 +94,19 @@ static const int COST_TO_CHOOSE = 1;
                     }
                 }
                 if (secondCard && thirdCard) {
-                    
+                    int matchScore = [card match:@[secondCard]];
+                    matchScore += [card match:@[thirdCard]];
+                    matchScore += [secondCard match:@[thirdCard]];
+                    if (matchScore) {
+                        self.score += matchScore * MATCH_THREE_BONUS;
+                        card.isMatched = YES;
+                        secondCard.isMatched = YES;
+                        thirdCard.isMatched = YES;
+                    } else {
+                        self.score -= MISMATCH_PENALTY;
+                        secondCard.chosen = NO;
+                        thirdCard.chosen = NO;
+                    }
                 }
             }
             self.score -= COST_TO_CHOOSE;

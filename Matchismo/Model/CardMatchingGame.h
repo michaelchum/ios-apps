@@ -21,6 +21,6 @@
 
 @property (nonatomic, readonly) NSUInteger score;
 @property (nonatomic) BOOL threeCardMatching;
-
+@property (nonatomic, strong) NSString *matchInfo;
 
 @end

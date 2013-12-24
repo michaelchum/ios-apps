@@ -1,4 +1,4 @@
-=== Lecture 1
+## Lecture 1
 
 MVC
 
@@ -33,15 +33,15 @@ Better than Garbage Collection that comes later like in Java!
 
 nonatomic = not thread safe, the property cannot be used by more than one thread at once
 
-@synthetize > specify the name of the property to an instance variable name instead of always using self.propertyName
-
 Put (nonatomic) for all properties!
+
+@synthetize > specify the name of the property to an instance variable name instead of always using self.propertyName
 
 No need (strong) or (weak) for primitive types like BOOL
 
 We use the . notation to call properties and [] notation to call methods
 
-=== Lecture 2
+## Lecture 2
 
 Need to synthetize property in order to give our own getter/setter
 
@@ -67,9 +67,119 @@ After running the app, bottom left: debugger, bottom right: console
 
 Synthetizer _propertyname only for specifying both getter AND setter
 
-=== Lecture 3
+## Lecture 3
 
 (readonly) means no setter then we can declare the same property with (readwrite) in the private interface()
+
+## Lecture 4
+
+- (id)mutableCopy; returns the mutable version of NSString * or NSSArray *
+
+"Dynamic Binding" is figuring out the code to execute when a message is sent to the object at runtime
+
+id object; // declares an object of undetermined type
+
+all objects are id at runtime
+
+at compile time, it checks which object type it is
+
+id IS A POINTER to an object
+
+Two methods of dynamic binding: introspection and protocols
+
+### Instrospection
+
+Is used for determining object class types in arrays and in MVC for determining existence
+
+NSObject contains these methods
+isKindOfClass:
+isMemberOfClass:
+respondsToSelector:
+
+#### isKindOfClass
+
+Class testing methods take as input Class object which are output of + (void)class
+
+if ([obj isKindOfClass:[NSString class]]) {
+	NSString *obj = [NSString stringByAppendingString:@"xyxxyx"; // we then cast obj with the type NSString for the compiler to know the type
+}
+
+#### @selector()
+
+special @selector() directive
+
+if ([obj respondsToSelector:@selector(shoot)]) {
+	[obj shoot];
+} else if ([obj respondsToSelector:@selector(shootAt)]) {
+	[obj shootAt:target];
+}
+
+SEL shootSelector = @selector(shoot);
+SEL shootAtSelector = @selector(shootAt:);
+
+Using performSelector: or performSelectorWithObject:
+[obj performSelector:shootSelector];
+[obj performSelector:shootAtSelector withObject:target];
+Introspection with arrays
+[myArray performOnObjects:shootSelector];
+
+### Foundation
+
+It is useful to override - (NSString *)description
+It is called during NSLog(@"%@", myArray); // %@ is like [myArray description]
+
+-(id)copy // returns an IMMUTABLE copy of the object whether the input object is mutable or immutable
+-(id)mutableCopy //return a MUTABLE copy
+
+#### NSArray
+Immutable, ordered collection, strong link to all objects
+-(NSUInteger)count;
+-(id)objectAtIndex(NSUInteger)Index; // crashes if array out of bounds
+-(id)lastObject; // returns nil if empty array
+-(id)firstObject; // returns nil if empty array
+
+#### NSMutableArray
+Created with allo/init or
++(id)arrayWithCapacity:(NSUInteger)numItems;
++(id)array // [NSMutableArray array] is the same as [[NSMutableArray alloc] init]
+
+#### Property list
+Is a phrase (not a programming language thing)
+A propoerty list is a collection of a collection
+i.e. If it cointains Card *, it's not a property list
+
+#### NSRange
+Not a class, it is a C struct used to specify subranges inside strings and arrays
+typedef struct {
+	NSUInteger location; // important location value NSNotFound
+	NSUInteger length;
+} NSRange;
+
+NSString *greeting = @"hello world"; NSString *hi = @"hi";
+NSRange r = [greeting rangeOfString:hi];
+if (r.location == NSNotFound) { /* Could not find hi inside greeting*/ }
+
+#### UIColor
+Object representing a color based on RGB, HSB
+UIColor *color = [otherColor colorWithAlphaComponent:0.3];
+UIColor *color = [UIColor greenColor];
+UIColor *color = [UIColor lightTestColor];
+
+#### UIFont
+Font in iOS is extremely important
+
+It is best to use the preferred font for content
+UIFont *font = [UIFont preferredFontForTextStyle:UIFrontTextStyleBody];
+e.g. UIFrontTextStyleHeadLine, UIFontTextStyleCaption1, UIFontTextStyleFootNote, etc.
+
+There are also "system" font, good for button titles
+ +(UIFont *)systemFontOfSize:(CGFloat)pointSize;
+ +(UIFont *)boldSystemFontOfSize:(CGFloat)pointSize;
+ NEVER use these for user contents, instead use preferredFontForTextStyle:
+
+ #### UIFontDescriptor
+
+
 
 
 

@@ -193,6 +193,7 @@
                     </view>
                     <connections>
                         <outlet property="scoreLabel" destination="tu9-dE-s0o" id="jgV-pG-cu4"/>
+                        <outlet property="twoOrThreeMatch" destination="9PJ-fb-22m" id="TGY-sM-Mc1"/>
                         <outletCollection property="cardButtons" destination="6i2-e7-MoN" id="8NK-5V-WQ4"/>
                         <outletCollection property="cardButtons" destination="U8U-KK-8Tf" id="CTF-XT-Jv7"/>
                         <outletCollection property="cardButtons" destination="erh-za-8bR" id="uYp-kU-JhO"/>
