@@ -48,13 +48,12 @@
 }
 
 static const int MATCH_BONUS = 4;
-static const int MATCH_THREE_BONUS = 3;
 static const int MISMATCH_PENALTY = 2;
 static const int COST_TO_CHOOSE = 1;
 
 - (void)chooseCardAtIndex:(NSUInteger)index {
     Card *card = [self cardAtIndex:index];
-    
+    self.matchInfo = @"Welcome to Matchismo";
     if (!card.isMatched) {
         if (!self.threeCardMatching) { // 2 card matching
             if (card.chosen) {
@@ -69,12 +68,15 @@ static const int COST_TO_CHOOSE = 1;
                             self.score += matchScore * MATCH_BONUS;
                             otherCard.isMatched = YES;
                             card.isMatched = YES;
+                            self.matchInfo = [NSString stringWithFormat:@"Matched %@ %@ for %d points",card.contents,otherCard.contents,matchScore*MATCH_BONUS];
                         } else {
                             self.score -= MISMATCH_PENALTY;
                             otherCard.chosen = NO;
+                            self.matchInfo = [NSString stringWithFormat:@"%@ %@ don't match! %d points penalty!",card.contents,otherCard.contents,MISMATCH_PENALTY];
                         }
                     }
                 }
+                if ([self.matchInfo isEqual: @"Welcome to Matchismo"]) self.matchInfo = card.contents;
                 self.score -= COST_TO_CHOOSE;
                 card.chosen = YES;
             }
@@ -98,19 +100,23 @@ static const int COST_TO_CHOOSE = 1;
                     matchScore += [card match:@[thirdCard]];
                     matchScore += [secondCard match:@[thirdCard]];
                     if (matchScore) {
-                        self.score += matchScore * MATCH_THREE_BONUS;
+                        self.score += matchScore * MATCH_BONUS;
                         card.isMatched = YES;
                         secondCard.isMatched = YES;
                         thirdCard.isMatched = YES;
+                        self.matchInfo = [NSString stringWithFormat:@"Matched %@ %@ %@ for %d points",card.contents,secondCard.contents,thirdCard.contents,matchScore*MATCH_BONUS];
                     } else {
                         self.score -= MISMATCH_PENALTY;
                         secondCard.chosen = NO;
                         thirdCard.chosen = NO;
+                        self.matchInfo = [NSString stringWithFormat:@"%@ %@ %@ don't match! %d points penalty!",card.contents,secondCard.contents,thirdCard.contents,MISMATCH_PENALTY];
                     }
+                } else {
+                    self.matchInfo = card.contents;
                 }
+                self.score -= COST_TO_CHOOSE;
+                card.chosen = YES;
             }
-            self.score -= COST_TO_CHOOSE;
-            card.chosen = YES;
         }
     }
 }

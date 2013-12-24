@@ -14,7 +14,9 @@
 @property (strong, nonatomic) CardMatchingGame *game;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *twoOrThreeMatch;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
+@property (weak, nonatomic) IBOutlet UILabel *textLabel;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
+
 @end
 
 @implementation CardGameViewController
@@ -35,6 +37,7 @@
     [self.twoOrThreeMatch setHidden:NO];
     self.game = nil;
     if (self.twoOrThreeMatch.selectedSegmentIndex) self.game.threeCardMatching = YES;
+    self.game.matchInfo = [NSString stringWithFormat:@"Matchismo restarted"];
     [self updateUI];
 }
 
@@ -63,6 +66,7 @@
         [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
         cardButton.enabled = !card.isMatched;
     }
+    self.textLabel.text = self.game.matchInfo;
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", self.game.score];
 }
 
