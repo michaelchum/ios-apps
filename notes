@@ -73,6 +73,7 @@ Synthetizer _propertyname only for specifying both getter AND setter
 
 ## Lecture 4
 
+- (id)copy; returns the IMMUTABLE version whether the original is mutable or immutable
 - (id)mutableCopy; returns the mutable version of NSString * or NSSArray *
 
 "Dynamic Binding" is figuring out the code to execute when a message is sent to the object at runtime
@@ -89,7 +90,7 @@ Two methods of dynamic binding: introspection and protocols
 
 ### Instrospection
 
-Is used for determining object class types in arrays and in MVC for determining existence
+Is used for determining object types(classes) in arrays and in MVC
 
 NSObject contains these methods
 isKindOfClass:
@@ -120,8 +121,11 @@ SEL shootAtSelector = @selector(shootAt:);
 Using performSelector: or performSelectorWithObject:
 [obj performSelector:shootSelector];
 [obj performSelector:shootAtSelector withObject:target];
+
 Introspection with arrays
-[myArray performOnObjects:shootSelector];
+[myArray performOnObjects:shootSelector]; // very useful to send messages to every objects of an array with only one line
+
+Introspection is extremely useful to check the types of objects in an array before performing sending messages
 
 ### Foundation
 
@@ -156,19 +160,19 @@ typedef struct {
 } NSRange;
 
 NSString *greeting = @"hello world"; NSString *hi = @"hi";
-NSRange r = [greeting rangeOfString:hi];
+NSRange r = [greeting rangeOfString:hi]; // not a pointer
 if (r.location == NSNotFound) { /* Could not find hi inside greeting*/ }
 
 #### UIColor
 Object representing a color based on RGB, HSB
-UIColor *color = [otherColor colorWithAlphaComponent:0.3];
+UIColor *color = [otherColor colorWithAlphaComponent:0.3]; // alpha is transparency
 UIColor *color = [UIColor greenColor];
 UIColor *color = [UIColor lightTestColor];
 
 #### UIFont
 Font in iOS is extremely important
 
-It is best to use the preferred font for content
+It is best to use the preferred font for user content
 UIFont *font = [UIFont preferredFontForTextStyle:UIFrontTextStyleBody];
 e.g. UIFrontTextStyleHeadLine, UIFontTextStyleCaption1, UIFontTextStyleFootNote, etc.
 
@@ -178,6 +182,54 @@ There are also "system" font, good for button titles
  NEVER use these for user contents, instead use preferredFontForTextStyle:
 
  #### UIFontDescriptor
+
+ #### NSAttributedString
+ Like a NSString, but each character has a dictionary of of "attributes", attributes are like font, color, underlined
+ Not a subclass of NSString, immutable
+
+ Getting the attributes
+ -(NSDictionary *)attributesAtIndex:(NSUInteger *)index effectiveRange:(NSRangePointer)range;
+ -(NSString *)string; // returns the NSAttributedString in the form of a NSString
+
+We almost mostly use NSMutableAttributedString not NSAttributedString
+-(void)addAttributes:(NSDictionary *)attributes range:(NSRange)range;
+-(void)setAttributes:(NSDictionary *)attributes range:(NSRange)range;
+-(void)removeAttribute:(NSString *)attributeName range:(NSRange)range;
+-(NSMutableString *)mutableString; // returns a pointer! modifying the returned NSMutableString will keep track of the attributes
+
+Attributed strings
+
+### Lecture 5
+
+#### UITextView
+
+@property (nonatomic,readonly) NSTextStorage *textStorage; // is a subclass of NSMutableAttributedString , updates on the fly
+@property (nonatomic,strong) UIFont *font; // warning with setFont which sets the font of every character
+@property (readonly) NSTextContainer *textContainer; // where the text can be 
+@property (readonly) NSLayoutManager *layoutManager
+
+View Controller Lifecycle
+
+-(void)viewDidLoad; is only called ONCE
+it is better than init of a viewController since all the outlets are set
+init of a viewController is never called
+DO NOT put geometry code (size of screen, e.g. iphone 5 or ipad) it does not know which device it is yet
+
+-(void)viewWillAppear:(BOOL)animated;
+just before the view appears on screen, BOOL animated is whether the screen appears instantly or overtime
+executes multiple times as view disappear and reappears
+PUT things that changed while MVC was off-screen (e.g. model)
+use for optimization in case a view may never appear, viewDidLoad executes everytime, but viewWillAppear executes ONLY if the view is going to appear on screen
+
+-(void)viewWillDisappear:(BOOL)animated;
+-(void)viewDidAppear:(BOOL)animated;
+-(void)viewDidDisappear:(BOOL)animeated;
+
+
+
+
+
+
 
 
 
