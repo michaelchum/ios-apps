@@ -35,7 +35,7 @@ nonatomic = not thread safe, the property cannot be used by more than one thread
 
 Put (nonatomic) for all properties!
 
-@synthetize > specify the name of the property to an instance variable name instead of always using self.propertyName
+@synthetize specify the name of the property to an instance variable name instead of always using self.propertyName
 
 No need (strong) or (weak) for primitive types like BOOL
 
@@ -107,7 +107,7 @@ if ([obj isKindOfClass:[NSString class]]) {
 
 #### @selector()
 
-special @selector() directive
+special @selector()
 
 if ([obj respondsToSelector:@selector(shoot)]) {
 	[obj shoot];
@@ -138,14 +138,18 @@ It is called during NSLog(@"%@", myArray); // %@ is like [myArray description]
 #### NSArray
 Immutable, ordered collection, strong link to all objects
 -(NSUInteger)count;
--(id)objectAtIndex(NSUInteger)Index; // crashes if array out of bounds
+-(id)objectAtIndex:(NSUInteger)Index; // crashes if array out of bounds
 -(id)lastObject; // returns nil if empty array
 -(id)firstObject; // returns nil if empty array
 
 #### NSMutableArray
-Created with allo/init or
+Created with alloc/init or
 +(id)arrayWithCapacity:(NSUInteger)numItems;
 +(id)array // [NSMutableArray array] is the same as [[NSMutableArray alloc] init]
+
+#### NSNumber 
+Object wrapper around primitive types like int, float, double, BOOL, enums, etc.
+NSNumber *match = @([card match:@[otherCard]]);
 
 #### Property list
 Is a phrase (not a programming language thing)
@@ -224,6 +228,8 @@ use for optimization in case a view may never appear, viewDidLoad executes every
 -(void)viewWillDisappear:(BOOL)animated;
 -(void)viewDidAppear:(BOOL)animated;
 -(void)viewDidDisappear:(BOOL)animeated;
+
+
 
 
 
