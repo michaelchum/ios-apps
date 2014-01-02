@@ -154,7 +154,9 @@ NSNumber *match = @([card match:@[otherCard]]);
 #### Property list
 Is a phrase (not a programming language thing)
 A propoerty list is a collection of a collection
-i.e. If it cointains Card *, it's not a property list
+The term “Property List” just means a collection of collections It’s just a phrase (not a language thing). It means any graph of objects containing only:
+NSArray, NSDictionary, NSNumber, NSString, NSDate, NSData (or mutable subclasses thereof)
+e.g. If it contains Card *, it's not a property list
 
 #### NSRange
 Not a class, it is a C struct used to specify subranges inside strings and arrays
@@ -228,6 +230,36 @@ use for optimization in case a view may never appear, viewDidLoad executes every
 -(void)viewWillDisappear:(BOOL)animated;
 -(void)viewDidAppear:(BOOL)animated;
 -(void)viewDidDisappear:(BOOL)animeated;
+
+Geometry changed
+- (void)view{Will,Did}LayoutSubviews;
+Called any time a view’s frame changed and its subviews were thus re-layed out. 
+For example, autorotation. Usually handled by Autolayout.
+
+Low memory detected by iOS 7
+In low-memory situations, didReceiveMemoryWarning gets called
+Anything “big” that can be recreated should probably be released (i.e. set strong pointer to nil)
+
+awakeFromNib
+Get's called before viewDidLoad and viewWillAppear, outlets are not set yet
+Anything that would go in your Controller’s init method would have to go in awakeFromNib too (because init methods are not called on objects that come out of a storyboard).
+
+#### View Controller Lifecycle Summary
+
+Instantiated by storyboard (many ways)
+awakeFromNib
+outlets get set
+(when geometry is determined)
+viewWillLayoutSubviews: and viewDidLayoutSubviews:
+viewWillAppear: and viewDidAppear:
+viewWillLayoutSubviews: and viewDidLayoutSubviews:
+(if it is autorotation, then you also get will/didRotateTo/From messages--rare to use these)
+viewWillDisappear: and viewDidDisappear: 
+(possibly if memory gets low ...)
+  didReceiveMemoryWarning
+(there is no “unload” anymore, so that’s all there is)
+
+
 
 
 

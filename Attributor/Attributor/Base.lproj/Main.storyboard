@@ -25,8 +25,9 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R1U-ck-teo">
-                                <rect key="frame" x="20" y="518" width="49" height="30"/>
+                                <rect key="frame" x="20" y="518" width="64" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Outline">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -101,6 +102,7 @@
                     <connections>
                         <outlet property="body" destination="D7v-gI-q47" id="rjd-vv-Qx0"/>
                         <outlet property="headline" destination="ls5-Au-wQX" id="2wO-3g-y7y"/>
+                        <outlet property="outlineButton" destination="R1U-ck-teo" id="DGb-EC-8RF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
