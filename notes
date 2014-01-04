@@ -259,6 +259,35 @@ viewWillDisappear: and viewDidDisappear:
   didReceiveMemoryWarning
 (there is no “unload” anymore, so that’s all there is)
 
+NSNotification is a "radio station" to intercept/broadcast changes
+NSNotificationCenter is the system radio station, it is the default notification
+
+- (void)addObserver:(id)observer // you (the object to get notified)
+selector:(SEL)methodToInvokeIfSomethingHappens
+name:(NSString *)name // name of station (a constant somewhere)
+object:(id)sender; // whose changes you’re interested in (nil is anyone’s) You will then be notified when there are broadcasts
+￼￼￼
+- (void)methodToInvokeIfSomethingHappens:(NSNotification *)notification
+{
+notification.name // the name passed above
+notification.object // the object sending you the notification notification.userInfo // notification-specific information about what happened
+}
+
+## Lecture 6
+
+### Polymorphism
+Abstract class, a class that must be subclassed, no use alone, no abstract word in objective-c
+
+### UINavigationController
+
+is an MVC by itself
+it uses rootViewController to embed other vies inside itself
+
+### Segues
+
+need an "identifier" from identifier inspector
+
+
 
 
 
