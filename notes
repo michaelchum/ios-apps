@@ -1,0 +1,308 @@
+## Lecture 1
+
+MVC
+
+Model <= Controller <=> View
+
+Never Model <=> View
+
+Controller => View via Outlet
+
+View => Controller via Action
+
+delegate = should, did, will (View <=> Controller)
+
+datasource = special delegate which provides data to View from Models via Controller
+
+model doesn't communicate to Controller directly, it is UI independent instead it uses "radio" (notification and KVO)
+controller checks when there's an update
+
+MVC can be a minion to another MVC > layers of MVC
+
+Each controller is mapped to a view or no view
+
+Controller can communicate with other controllers but never another view
+
+Objective-C
+
+.h file is the public API, every method and property for public access
+
+pointers property can be strong or weak, Automatic Reference Counting keeps track of strong pointers
+if there are no more strong pointers (but only weak), the memory location is erased by ARC and sets pointer to nil
+Better than Garbage Collection that comes later like in Java!
+
+nonatomic = not thread safe, the property cannot be used by more than one thread at once
+
+Put (nonatomic) for all properties!
+
+@synthetize specify the name of the property to an instance variable name instead of always using self.propertyName
+
+No need (strong) or (weak) for primitive types like BOOL
+
+We use the . notation to call properties and [] notation to call methods
+
+## Lecture 2
+
+Need to synthetize property in order to give our own getter/setter
+
+- (instancetype)init{
+	self = [super init]; // Unique strange to check if self exists from super class
+	// If self is not nil
+	if (self) {
+
+	}
+} 
+
+XCode
+
+Left: Navigator
+
+Right: Utilities
+
+Storyboard view: Left: Documentation outline
+
+- (IBAction)touchCardButton:(UIButton *) sender{} // Can then use the button in the code
+
+After running the app, bottom left: debugger, bottom right: console
+
+Synthetizer _propertyname only for specifying both getter AND setter
+
+## Lecture 3
+
+(readonly) means no setter then we can declare the same property with (readwrite) in the private interface()
+
+## Lecture 4
+
+- (id)copy; returns the IMMUTABLE version whether the original is mutable or immutable
+- (id)mutableCopy; returns the mutable version of NSString * or NSSArray *
+
+"Dynamic Binding" is figuring out the code to execute when a message is sent to the object at runtime
+
+id object; // declares an object of undetermined type
+
+all objects are id at runtime
+
+at compile time, it checks which object type it is
+
+id IS A POINTER to an object
+
+Two methods of dynamic binding: introspection and protocols
+
+### Instrospection
+
+Is used for determining object types(classes) in arrays and in MVC
+
+NSObject contains these methods
+isKindOfClass:
+isMemberOfClass:
+respondsToSelector:
+
+#### isKindOfClass
+
+Class testing methods take as input Class object which are output of + (void)class
+
+if ([obj isKindOfClass:[NSString class]]) {
+	NSString *obj = [NSString stringByAppendingString:@"xyxxyx"; // we then cast obj with the type NSString for the compiler to know the type
+}
+
+#### @selector()
+
+special @selector()
+
+if ([obj respondsToSelector:@selector(shoot)]) {
+	[obj shoot];
+} else if ([obj respondsToSelector:@selector(shootAt)]) {
+	[obj shootAt:target];
+}
+
+SEL shootSelector = @selector(shoot);
+SEL shootAtSelector = @selector(shootAt:);
+
+Using performSelector: or performSelectorWithObject:
+[obj performSelector:shootSelector];
+[obj performSelector:shootAtSelector withObject:target];
+
+Introspection with arrays
+[myArray performOnObjects:shootSelector]; // very useful to send messages to every objects of an array with only one line
+
+Introspection is extremely useful to check the types of objects in an array before performing sending messages
+
+### Foundation
+
+It is useful to override - (NSString *)description
+It is called during NSLog(@"%@", myArray); // %@ is like [myArray description]
+
+-(id)copy // returns an IMMUTABLE copy of the object whether the input object is mutable or immutable
+-(id)mutableCopy //return a MUTABLE copy
+
+#### NSArray
+Immutable, ordered collection, strong link to all objects
+-(NSUInteger)count;
+-(id)objectAtIndex:(NSUInteger)Index; // crashes if array out of bounds
+-(id)lastObject; // returns nil if empty array
+-(id)firstObject; // returns nil if empty array
+
+#### NSMutableArray
+Created with alloc/init or
++(id)arrayWithCapacity:(NSUInteger)numItems;
++(id)array // [NSMutableArray array] is the same as [[NSMutableArray alloc] init]
+
+#### NSNumber 
+Object wrapper around primitive types like int, float, double, BOOL, enums, etc.
+NSNumber *match = @([card match:@[otherCard]]);
+
+#### Property list
+Is a phrase (not a programming language thing)
+A propoerty list is a collection of a collection
+The term “Property List” just means a collection of collections It’s just a phrase (not a language thing). It means any graph of objects containing only:
+NSArray, NSDictionary, NSNumber, NSString, NSDate, NSData (or mutable subclasses thereof)
+e.g. If it contains Card *, it's not a property list
+
+#### NSRange
+Not a class, it is a C struct used to specify subranges inside strings and arrays
+typedef struct {
+	NSUInteger location; // important location value NSNotFound
+	NSUInteger length;
+} NSRange;
+
+NSString *greeting = @"hello world"; NSString *hi = @"hi";
+NSRange r = [greeting rangeOfString:hi]; // not a pointer
+if (r.location == NSNotFound) { /* Could not find hi inside greeting*/ }
+
+#### UIColor
+Object representing a color based on RGB, HSB
+UIColor *color = [otherColor colorWithAlphaComponent:0.3]; // alpha is transparency
+UIColor *color = [UIColor greenColor];
+UIColor *color = [UIColor lightTestColor];
+
+#### UIFont
+Font in iOS is extremely important
+
+It is best to use the preferred font for user content
+UIFont *font = [UIFont preferredFontForTextStyle:UIFrontTextStyleBody];
+e.g. UIFrontTextStyleHeadLine, UIFontTextStyleCaption1, UIFontTextStyleFootNote, etc.
+
+There are also "system" font, good for button titles
+ +(UIFont *)systemFontOfSize:(CGFloat)pointSize;
+ +(UIFont *)boldSystemFontOfSize:(CGFloat)pointSize;
+ NEVER use these for user contents, instead use preferredFontForTextStyle:
+
+ #### UIFontDescriptor
+
+ #### NSAttributedString
+ Like a NSString, but each character has a dictionary of of "attributes", attributes are like font, color, underlined
+ Not a subclass of NSString, immutable
+
+ Getting the attributes
+ -(NSDictionary *)attributesAtIndex:(NSUInteger *)index effectiveRange:(NSRangePointer)range;
+ -(NSString *)string; // returns the NSAttributedString in the form of a NSString
+
+We almost mostly use NSMutableAttributedString not NSAttributedString
+-(void)addAttributes:(NSDictionary *)attributes range:(NSRange)range;
+-(void)setAttributes:(NSDictionary *)attributes range:(NSRange)range;
+-(void)removeAttribute:(NSString *)attributeName range:(NSRange)range;
+-(NSMutableString *)mutableString; // returns a pointer! modifying the returned NSMutableString will keep track of the attributes
+
+Attributed strings
+
+### Lecture 5
+
+#### UITextView
+
+@property (nonatomic,readonly) NSTextStorage *textStorage; // is a subclass of NSMutableAttributedString , updates on the fly
+@property (nonatomic,strong) UIFont *font; // warning with setFont which sets the font of every character
+@property (readonly) NSTextContainer *textContainer; // where the text can be 
+@property (readonly) NSLayoutManager *layoutManager
+
+View Controller Lifecycle
+
+-(void)viewDidLoad; is only called ONCE
+it is better than init of a viewController since all the outlets are set
+init of a viewController is never called
+DO NOT put geometry code (size of screen, e.g. iphone 5 or ipad) it does not know which device it is yet
+
+-(void)viewWillAppear:(BOOL)animated;
+just before the view appears on screen, BOOL animated is whether the screen appears instantly or overtime
+executes multiple times as view disappear and reappears
+PUT things that changed while MVC was off-screen (e.g. model)
+use for optimization in case a view may never appear, viewDidLoad executes everytime, but viewWillAppear executes ONLY if the view is going to appear on screen
+
+-(void)viewWillDisappear:(BOOL)animated;
+-(void)viewDidAppear:(BOOL)animated;
+-(void)viewDidDisappear:(BOOL)animeated;
+
+Geometry changed
+- (void)view{Will,Did}LayoutSubviews;
+Called any time a view’s frame changed and its subviews were thus re-layed out. 
+For example, autorotation. Usually handled by Autolayout.
+
+Low memory detected by iOS 7
+In low-memory situations, didReceiveMemoryWarning gets called
+Anything “big” that can be recreated should probably be released (i.e. set strong pointer to nil)
+
+awakeFromNib
+Get's called before viewDidLoad and viewWillAppear, outlets are not set yet
+Anything that would go in your Controller’s init method would have to go in awakeFromNib too (because init methods are not called on objects that come out of a storyboard).
+
+#### View Controller Lifecycle Summary
+
+Instantiated by storyboard (many ways)
+awakeFromNib
+outlets get set
+(when geometry is determined)
+viewWillLayoutSubviews: and viewDidLayoutSubviews:
+viewWillAppear: and viewDidAppear:
+viewWillLayoutSubviews: and viewDidLayoutSubviews:
+(if it is autorotation, then you also get will/didRotateTo/From messages--rare to use these)
+viewWillDisappear: and viewDidDisappear: 
+(possibly if memory gets low ...)
+  didReceiveMemoryWarning
+(there is no “unload” anymore, so that’s all there is)
+
+NSNotification is a "radio station" to intercept/broadcast changes
+NSNotificationCenter is the system radio station, it is the default notification
+
+- (void)addObserver:(id)observer // you (the object to get notified)
+selector:(SEL)methodToInvokeIfSomethingHappens
+name:(NSString *)name // name of station (a constant somewhere)
+object:(id)sender; // whose changes you’re interested in (nil is anyone’s) You will then be notified when there are broadcasts
+￼￼￼
+- (void)methodToInvokeIfSomethingHappens:(NSNotification *)notification
+{
+notification.name // the name passed above
+notification.object // the object sending you the notification notification.userInfo // notification-specific information about what happened
+}
+
+## Lecture 6
+
+### Polymorphism
+Abstract class, a class that must be subclassed, no use alone, no abstract word in objective-
+
+### UINavigationController
+
+is an MVC by itself
+it uses rootViewController to embed other vies inside itself
+in the UINavigationController bar
+
+### Segues
+
+need an "identifier" from identifier inspector
+
+## Lecture 7 
+
+ALWAYS USE - (void)setNeedsDisplay DO NOT CALL - (void)drawRect:(CGRect)rect
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

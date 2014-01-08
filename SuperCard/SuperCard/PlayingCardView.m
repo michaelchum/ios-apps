@@ -8,9 +8,31 @@
 
 #import "PlayingCardView.h"
 
+@interface PlayingCardView()
+
+@property (nonatomic) CGFloat faceCardScaleFactor;
+
+@end
+
 @implementation PlayingCardView
 
 #pragma mark - Properties
+
+@synthesize faceCardScaleFactor = _faceCardScaleFactor;
+
+#define DEFAULT_FACE_CARD_SCALE_FACTOR 0.90
+
+- (CGFloat)faceCardScaleFactor
+{
+    if (!_faceCardScaleFactor) _faceCardScaleFactor = DEFAULT_FACE_CARD_SCALE_FACTOR;
+    return _faceCardScaleFactor;
+}
+
+- (void)setFaceCardScaleFactor:(CGFloat)faceCardScaleFactor
+{
+    _faceCardScaleFactor = faceCardScaleFactor;
+    [self setNeedsDisplay];
+}
 
 - (void)setSuit:(NSString *)suit
 {
@@ -28,6 +50,15 @@
 {
     _faceUp = faceUp;
     [self setNeedsDisplay];
+}
+
+- (void)pinch:(UIPinchGestureRecognizer *)gesture
+{
+    if ((gesture.state == UIGestureRecognizerStateChanged) ||
+        (gesture.state == UIGestureRecognizerStateEnded)) {
+        self.faceCardScaleFactor *= gesture.scale;
+        gesture.scale = 1.0;
+    }
 }
 
 #pragma mark - Drawing
@@ -51,12 +82,31 @@
     [roundedRect addClip];
     
     [[UIColor whiteColor] setFill];
-    UIRectFill(self.bounds);
+    UIRectFill(self.bounds); // same as [roundedRect fill];
     
     [[UIColor blackColor] setStroke];
     [roundedRect stroke];
     
-    [self drawCorners];
+    if (self.faceUp) {
+        // Image in the middle
+        UIImage *faceImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@%@",[self rankAsString],self.suit]];
+        if (faceImage) {
+            // CGRectInset sets the image a little bit inside centered
+            CGRect imageRect = CGRectInset(self.bounds,
+                                           self.bounds.size.width * (1.0-self.faceCardScaleFactor),
+                                           self.bounds.size.height * (1.0-self.faceCardScaleFactor));
+            [faceImage drawInRect:imageRect];
+        } else {
+            [self drawPips];
+        }
+        
+        [self drawCorners];
+    }
+}
+
+- (void)drawPips
+{
+    
 }
 
 - (NSString *)rankAsString
@@ -77,6 +127,12 @@
     CGRect textBounds;
     textBounds.origin =  CGPointMake([self cornerOffset], [self cornerOffset]);
     textBounds.size = [cornerText size];
+    [cornerText drawInRect:textBounds]; // The top left rank/suit
+    
+    //Now the bottom right rank/suit
+    CGContextRef *context = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(context, self.bounds.size.width, self.bounds.size.height);
+    CGContextRotateCTM(context,M_PI);
     [cornerText drawInRect:textBounds];
 }
 
